@@ -10,35 +10,36 @@ import CountryCard from "./country-card";
 import Dropdown from "../../components/dropdown";
 import Loading from "../../components/loading";
 import Error from "../../components/error";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
 let isSearching = false;
 let regions: string[] = [];
 const CountriesList = () => {
   const [seachKey, setSearchKey] = useState("");
   const [regionFilter, setRegionFilter] = useState("");
-  const { isLoading, data, error } = useGetAllCountriesQuery(seachKey, {
+  const { isLoading,isFetching, data, error } = useGetAllCountriesQuery(seachKey, {
     skip: isSearching,
   });
-  if(isLoading)
-  return <Loading/>
-  
+  if (isLoading) return <Loading />;
+
   let countries: Countries = data ?? [];
-  
-  if(error||countries?.length <= 0)
-  return <Error/>
-  if(countries.length>0){if (regionFilter) {
-    countries = countries.filter((a) => a.region === regionFilter);
-  }
-  
-  countries.forEach((country) => {
-    if (!regions.includes(country.region)) {
-      regions.push(country.region);
+  const notFoundError = (error as FetchBaseQueryError)?.status == 404;
+  if ((error || countries?.length <= 0) && !notFoundError) return <Error />;
+  if (countries.length > 0) {
+    if (regionFilter) {
+      countries = countries.filter((a) => a.region === regionFilter);
     }
-  });}
-  
+
+    countries.forEach((country) => {
+      if (!regions.includes(country.region)) {
+        regions.push(country.region);
+      }
+    });
+  }
+
   return (
     <div className="flex  h-[100vh]  overflow-auto pt-[6rem] background-element  m-auto flex-col">
       <div className="flex md:px-20 md:mb-5 px-5 flex-col md:flex-row md:items-center md:justify-between">
-        <div className="flex rounded-md overflow-clip items-center element">
+        <div className="flex rounded-md overflow-clip  items-center place-content-stretch element">
           <IoMdSearch
             className={`${
               seachKey && isLoading && "animate-bounce"
@@ -47,15 +48,9 @@ const CountriesList = () => {
           <input
             placeholder="Search for a country..."
             onChange={(e) => {
-              if (e.target.value) {
-                setTimeout(() => {
-                  setSearchKey(e.target.value);
-                }, 800);
-              } else {
-                setSearchKey(e.target.value);
-              }
+              setSearchKey(e.target.value);
             }}
-            className="input md:w-[20rem] text-sm ml-2 px-3 py-4  outline-none  border-transparent border-none"
+            className="input flex-1 md:w-[20rem] w-fill   text-sm ml-2 px-3 py-4  outline-none  border-transparent border-none"
           />
         </div>
         <Dropdown
@@ -77,11 +72,17 @@ const CountriesList = () => {
           options={regionFilter ? ["None", ...regions] : regions}
         />
       </div>
-      <div className="flex  w-full justify-center items-stretch flex-row flex-wrap  ">
-        { 
-          countries.map((country) => <CountryCard key={country.name.official} country={country} />)
-       }
-      </div>
+      {(isLoading||isFetching) ? (
+        <Loading />
+      ) : notFoundError ? (
+        <Error error="Nothing found on earth try in another planet" />
+      ) : (
+        <div className="flex  w-full justify-center items-stretch flex-row flex-wrap  ">
+          {countries.map((country) => (
+            <CountryCard key={country.name.official} country={country} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -10,7 +10,7 @@ import Error from "../../components/error";
 const CountryDetails = () => {
   const params = useParams();
   const navigation = useNavigate();
-  const { isLoading, error, data } = useGetCountryByNameQuery(params.id ?? "");
+  const { isLoading,isFetching, error, data } = useGetCountryByNameQuery(params.id ?? "");
 
   if (isLoading) return <Loading/>;
   if (error || !(data?.length ?? 0 > 0)) 
@@ -36,7 +36,7 @@ const CountryDetails = () => {
       <div className="flex md:mx-20 flex-col md:flex-row
        md:items-center md:justify-center gap-5 md:gap-24 mx-5">
         <img
-          className="my-7 element h-[12rem]  md:h-[15rem] object-cover"
+          className="my-7 max-w-[18rem] element    self-center object-scale-down"
           alt={country?.name?.official}
           src={country?.flags?.svg}
         />
@@ -77,7 +77,7 @@ const CountryDetails = () => {
          <div className="flex flex-col gap-2">
          <p className="mt-6 md:mt-0">
             <span className="font-medium">Top Level Domain: </span>.
-            {country?.name?.official.toLowerCase().substring(0, 2)}
+            {country?.name?.official?.toLowerCase()?.substring(0, 2)??"..."}
           </p>
           <p>
             <span className="font-medium">Currencies: </span>
