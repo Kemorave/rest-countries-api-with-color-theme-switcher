@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, ScrollRestoration } from "react-router-dom";
 import "./App.css";
 import Toggle from "./components/toggle";
 
@@ -11,7 +11,7 @@ function App() {
   const [theme, setTheme] = useState("light");
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
-      <div className={`${theme}`}>
+      <div className={`${theme}`}> 
         <nav className="px-5 md:px-20 py-5 fixed w-full  top-0 z-50 transition-colors element">
           <ul className=" flex flex-row  justify-between items-center">
           <Link to='/'>

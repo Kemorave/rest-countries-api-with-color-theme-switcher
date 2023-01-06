@@ -26,3 +26,27 @@
   background-color: #fafafa;
   color: #111517;
 }
+
+.loading-shimmer {
+  @apply  dark:bg-[#202c37]
+  bg-gray-100  ;
+  background-image: linear-gradient(90deg, rgba(221, 221, 221, 0.301), #E0DDDD50, rgba(204, 204, 204, 0.39));
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  border-radius: 4px;
+  display: inline-block;
+  line-height: 1;
+  width: 100%;
+}
+.loading-shimmer-animation{
+  animation: progress 2.2s ease-in-out infinite;
+}
+
+@keyframes progress {
+  0% {
+    background-position: -250px 0;
+  }
+  100% {
+    background-position: calc(250px + 100%) 0;
+  }
+}

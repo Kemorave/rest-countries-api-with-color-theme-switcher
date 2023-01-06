@@ -11,6 +11,7 @@ import Dropdown from "../../components/dropdown";
 import Loading from "../../components/loading";
 import Error from "../../components/error";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
+import { ScrollRestoration } from "react-router-dom";
 let isSearching = false;
 let regions: string[] = [];
 const CountriesList = () => {
@@ -19,11 +20,10 @@ const CountriesList = () => {
   const { isLoading,isFetching, data, error } = useGetAllCountriesQuery(seachKey, {
     skip: isSearching,
   });
-  if (isLoading) return <Loading />;
 
   let countries: Countries = data ?? [];
   const notFoundError = (error as FetchBaseQueryError)?.status == 404;
-  if ((error || countries?.length <= 0) && !notFoundError) return <Error />;
+  if ((error || countries?.length <= 0) && !notFoundError&&!(isLoading||isFetching)) return <Error />;
   if (countries.length > 0) {
     if (regionFilter) {
       countries = countries.filter((a) => a.region === regionFilter);
@@ -38,7 +38,7 @@ const CountriesList = () => {
 
   return (
     <div className="flex  h-[100vh]  overflow-auto pt-[6rem] background-element  m-auto flex-col">
-      <div className="flex md:px-20 md:mb-5 px-5 flex-col md:flex-row md:items-center md:justify-between">
+       <div className="flex md:px-20 mb-5 md:mb-5 px-5 flex-col md:flex-row md:items-center md:justify-between">
         <div className="flex rounded-md overflow-clip  items-center place-content-stretch element">
           <IoMdSearch
             className={`${
@@ -73,7 +73,8 @@ const CountriesList = () => {
         />
       </div>
       {(isLoading||isFetching) ? (
-        <Loading />
+        <Loading shimmer={true} shimmerClassName='m-5
+        cursor-pointer overflow-clip w-[18em] h-[18rem] md:mx-7 md:w-[13em] rounded-md' num={3} />
       ) : notFoundError ? (
         <Error error="Nothing found on earth try in another planet" />
       ) : (
