@@ -14,9 +14,9 @@ function App() {
       <div className={`${theme}`}> 
         <nav className="px-5 md:px-20 py-5 fixed w-full  top-0 z-50 transition-colors element">
           <ul className=" flex flex-row  justify-between items-center">
-          <Link to='/'>
-          <li className="font-semibold whitespace-nowrap text-sm">Where in the world?</li>
-          </Link>
+        
+          <li className="font-semibold whitespace-nowrap text-sm">  <Link to='/'>Where in the world?  </Link></li>
+        
             <li>
               <Toggle />
             </li>
