@@ -11,23 +11,23 @@ function App() {
   const [theme, setTheme] = useState("light");
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
-      <div className={`${theme}`}> 
+      <div className={`${theme}`}>
         <nav className="px-5 md:px-20 py-5 fixed w-full  top-0 z-50 transition-colors element">
           <ul className=" flex flex-row  justify-between items-center">
-        
-          <li className="font-semibold whitespace-nowrap text-sm">  <Link to='/'>Where in the world?  </Link></li>
-        
+            <li className="font-semibold whitespace-nowrap text-sm">
+              <Link to="/">Where in the world? </Link>
+            </li>
             <li>
               <Toggle />
             </li>
           </ul>
         </nav>
-       <main>
-       <Routes>
-          <Route path="/" index element={<CountriesList />} />
-          <Route path="/:id" element={<CountryDetails />} />
-        </Routes>
-       </main>
+        <main>
+          <Routes>
+            <Route path="/" index element={<CountriesList />} />
+            <Route path="/:id" element={<CountryDetails />} />
+          </Routes>
+        </main>
       </div>
     </ThemeContext.Provider>
   );

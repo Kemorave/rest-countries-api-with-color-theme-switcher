@@ -81,11 +81,11 @@ const CountryDetails = () => {
           </p>
           <p>
             <span className="font-medium">Currencies: </span>
-            {(Object.values(country?.currencies as any).at(0) as any).name}
+            {(Object.values(country?.currencies as any??[])?.at(0) as any)?.name}
           </p>
           <p>
             <span className="font-medium">Languages: </span>
-            {Object.values(country?.languages as any).join(", ")}
+            {Object.values(country?.languages as any??[])?.join(", ")}
           </p>
          </div>
          </div>
